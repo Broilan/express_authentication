@@ -46,9 +46,9 @@ npm install
 `3` We need to install some packages that will be used for `authentication`. Those are the following packages:
 
 ```text
-npm install bcrypt connect-flash passport passport-local express-session method-override
+npm install bcryptjs connect-flash passport passport-local express-session method-override
 ```
--  [bcrypt](https://www.npmjs.com/package/bcrypt): A library to help you hash passwords. ( [wikipedia](https://en.wikipedia.org/wiki/Bcrypt) ) 
+-  [bcryptjs](https://www.npmjs.com/package/bcryptjs): A library to help you hash passwords. ( [wikipedia](https://en.wikipedia.org/wiki/Bcrypt) ) 
     - Blowfish has a 64-bit block size and a variable key length from 32 bits up to 448 bits.
 - [connect-flash](https://github.com/jaredhanson/connect-flash): The flash is an area of the session used for storing messages that will be used to to display to the user. Flash is typically used with redirects.
 - [passport](https://www.passportjs.org/docs/): Passport is authentication middleware for Node.js. It is designed to do one thing authenticate requests. There are over 500+ strategies used to authenticate a user; however, we will be using one - *passport-local* Passport is authentication middleware for Node. It is designed to serve a singular purpose: authenticate requests
@@ -149,13 +149,13 @@ sequelize db:create
 
 ## `4` Create `user` Model & Add Validations
 
-`1` Add `User` model
+`1` Add `user` model
 
 ```text
-sequelize model:create --name User --attributes name:string,email:string,password:string
+sequelize model:create --name user --attributes name:string,email:string,password:string
 ```
 
-`2` Add **validations** for `User` model
+`2` Add **validations** for `user` model
 
 Validations are used as constraints for a column in a table that requires an entry in the database to follow various rules set in order for that data to be entered into the database.
 
@@ -166,7 +166,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class User extends Model {
+  class user extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -176,7 +176,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   };
-  User.init({
+  user.init({
     name: {
       type: DataTypes.STRING,
       validate: {
@@ -205,55 +205,55 @@ module.exports = (sequelize, DataTypes) => {
     }
   }, {
     sequelize,
-    modelName: 'User',
+    modelName: 'user',
   });
 
-  return User; // add functions above 
+  return user; // add functions above 
 };
 ```
 
 `3` Make a *commit* message
 ```text
 git add .
-git commit -m "add: User model and validations"
+git commit -m "add: user model and validations"
 ```
 
-## `5` Add Methods to `User` Model to Hash Password, Etc.
+## `5` Add Methods to `user` Model to Hash Password, Etc.
 
-`1` Import `bcrypt` at the top of `User` model
+`1` Import `bcrypt` at the top of `user` model
 ```js
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 ```
 
-`2` Create a hook `beforeCreate` to hash **password** inside `User` model before it enters the database
+`2` Create a hook `beforeCreate` to hash **password** inside `user` model before it enters the database
 
 Inside of the user model, add the following hook to hash password
 
 ```js
 // Before a user is created, we are encrypting the password and using hash in its place
-User.addHook('beforeCreate', (pendingUser) => { // pendingUser is user object that gets passed to DB
+user.addHook('beforeCreate', (pendingUser) => { // pendingUser is user object that gets passed to DB
     // Bcrypt is going to hash the password
     let hash = bcrypt.hashSync(pendingUser.password, 12); // hash 12 times
     pendingUser.password = hash; // this will go to the DB
 });  
 ```
 
-`3` Add `validPassword()` method to `User` model that will compare a password entered with the hashed password
+`3` Add `validPassword()` method to `user` model that will compare a password entered with the hashed password
 
 ```js
  // Check the password on Sign-In and compare it to the hashed password in the DB
-User.prototype.validPassword = function(typedPassword) {
+user.prototype.validPassword = function(typedPassword) {
     let isCorrectPassword = bcrypt.compareSync(typedPassword, this.password); // check to see if password is correct.
 
     return isCorrectPassword;
 }
 ```
 
-`4` Add `toJSON()` method to `User` model that will delete password to prevent from being used on the client
+`4` Add `toJSON()` method to `user` model that will delete password to prevent from being used on the client
 
 ```js
 // return an object from the database of the user without the encrypted password
-User.prototype.toJSON = function() {
+user.prototype.toJSON = function() {
     let userData = this.get(); 
     delete userData.password; // it doesn't delete password from database, only removes it. 
     
@@ -333,7 +333,7 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 
 // Database
-const { User } = require('../models');
+const db = require('../models');
 ```
 
 `3` Create a new instance of a `LocalStrategy`
@@ -344,7 +344,7 @@ const STRATEGY = new LocalStrategy({
     passwordField: 'password'       // looks for an password field as the password
     }, async (email, password, cb) => {
         try {
-            const user = await User.findOne({
+            const user = await db.user.findOne({
                 where: { email }
             });
 
@@ -374,7 +374,7 @@ passport.serializeUser((user, cb) => {
 ```js
 passport.deserializeUser(async (id, cb) => {
     try {
-        const user = await User.findByPk(id);
+        const user = await db.user.findByPk(id);
 
         if (user) {
             cb(null, user)
@@ -541,7 +541,7 @@ The form that the data will be submitted from:
 ```
 `1` Import **`database`** into `auth.js` file
 ```js
-const { User } = require('../models');
+const db = require('../models');
 ```
 
 `2` Create a **`post`** route for signup
@@ -551,7 +551,7 @@ router.post('/signup', async (req, res) => {
   // we now have access to the user info (req.body);
   const { email, name, password } = req.body; // goes and us access to whatever key/value inside of the object
   try {
-    const [user, created] = await User.findOrCreate({
+    const [user, created] = await db.user.findOrCreate({
         where: { email },
         defaults: { name, password }
     });

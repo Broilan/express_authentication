@@ -1,7 +1,7 @@
 {
-  "name": "express-authentication",
+  "name": "express_authentication",
   "version": "1.0.0",
-  "description": "This is express authentication",
+  "description": "Express authentication template using Passport + Flash messages + custom middleware",
   "main": "server.js",
   "directories": {
     "test": "test"
@@ -13,34 +13,31 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/romebell/express-authentication.git"
+    "url": "git+https://github.com/SEIRFX-621/express_authentication.git"
   },
-  "author": "You",
+  "keywords": [],
+  "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/romebell/express-authentication/issues"
+    "url": "https://github.com/SEIRFX-621/express_authentication/issues"
   },
-  "homepage": "https://github.com/romebell/express-authentication#readme",
+  "homepage": "https://github.com/SEIRFX-621/express_authentication#readme",
+  "devDependencies": {
+    "chai": "^4.3.6",
+    "mocha": "^10.0.0",
+    "supertest": "^6.2.4"
+  },
   "dependencies": {
-    "axios": "^0.21.0",
-    "bcrypt": "^5.0.1",
-    "connect-flash": "^0.1.1",
-    "dotenv": "^8.2.0",
-    "ejs": "^3.1.5",
-    "express": "^4.17.1",
-    "express-ejs-layouts": "^2.5.0",
-    "express-session": "^1.17.2",
-    "faker": "^5.5.3",
+    "@ngneat/falso": "^6.1.0",
+    "axios": "^0.27.2",
+    "dotenv": "^16.0.2",
+    "ejs": "^3.1.8",
+    "express": "^4.18.1",
+    "express-ejs-layouts": "^2.5.1",
     "method-override": "^3.0.0",
     "morgan": "^1.10.0",
-    "passport": "^0.4.1",
-    "passport-local": "^1.0.0",
-    "pg": "^8.5.1",
-    "sequelize": "^6.3.5"
-  },
-  "devDependencies": {
-    "chai": "^4.2.0",
-    "mocha": "^8.2.1",
-    "supertest": "^6.0.1"
+    "pg": "^8.8.0",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.21.6"
   }
 }
