@@ -10,7 +10,7 @@ const isLoggedIn = require('./middleware/isLoggedIn');
 
 
 const SECRET_SESSION = process.env.SECRET_SESSION;
-console.log( "yooooo" SECRET_SESSION);
+console.log( "yooooo", SECRET_SESSION);
 
 app.set('view engine', 'ejs');
 
