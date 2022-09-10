@@ -43,4 +43,5 @@ passport.deserializeUser(async (id, cb) => {
 });
 
 passport.use(STRATEGY);
+
 module.exports = passport;
