@@ -638,19 +638,7 @@ The purpose of these partials ( `views` ) is to render the `flash` alerts to the
 <%- include('partials/alerts') %>
 ```
 
-`5` Include **`Bootstrap`** CDN inside of the `layout.ejs` page
-
-Inside of the **`<head>`**
-```ejs
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
-```
-
-Before the last **`</body>`** tag
-```ejs
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
-```
-
-`6` Make *commit* message
+`5` Make *commit* message
 ```text
 git add .
 git commit -m "alerts: add partials for flash alerts"
