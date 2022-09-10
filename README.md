@@ -70,12 +70,12 @@ git commit -m "Install dependencies for project"
 ```json
 {
   "development": {
-    "database": "express_authentication_development",
+    "database": "express_auth_dev",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },
   "test": {
-    "database": "express_authentication_test",
+    "database": "express_auth_test",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },
@@ -92,7 +92,7 @@ git commit -m "Install dependencies for project"
 }
 ```
 
-`2` Create database `express_authentication_development`
+`2` Create database `express_auth_dev`
 
 ```text
 sequelize db:create
